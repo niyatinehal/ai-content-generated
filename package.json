@@ -7,7 +7,11 @@
     "start": "node scripts/generateContent.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["ai", "content-generation", "openai"],
+  "keywords": [
+    "ai",
+    "content-generation",
+    "openai"
+  ],
   "author": "",
   "license": "ISC",
   "description": "Generate AI-powered content for social media platforms",
