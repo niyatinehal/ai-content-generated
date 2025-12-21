@@ -4,26 +4,38 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+if (!process.env.GROQ_API_KEY) {
+  throw new Error("GROQ_API_KEY is missing");
+}
+
+const client = new OpenAI({
+  apiKey: process.env.GROQ_API_KEY,
+  baseURL: "https://api.groq.com/openai/v1",
+});
 
 const idea = "Post about consistency beating talent in tech";
 
 async function run() {
-  const linkedin = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+  const linkedin = await client.chat.completions.create({
+    model: "llama-3.1-8b-instant",
     messages: [
       {
         role: "system",
-        content: "Write LinkedIn posts for tech professionals.",
+        content:
+          "Write LinkedIn posts for tech professionals. Clear, practical, motivating.",
       },
       { role: "user", content: idea },
     ],
   });
 
-  const twitter = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+  const twitter = await client.chat.completions.create({
+    model: "llama-3.1-8b-instant",
     messages: [
-      { role: "system", content: "Write a Twitter post under 280 characters." },
+      {
+        role: "system",
+        content:
+          "Write a Twitter post under 280 characters. Crisp and impactful.",
+      },
       { role: "user", content: idea },
     ],
   });
@@ -38,4 +50,7 @@ async function run() {
   fs.writeFileSync("content/scheduled.json", JSON.stringify(content, null, 2));
 }
 
-run();
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
