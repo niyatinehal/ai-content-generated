@@ -1,0 +1,37 @@
+name: AI Content Generator
+
+on:
+  workflow_dispatch:
+    inputs:
+      idea:
+        description: "Content idea"
+        required: true
+  schedule:
+    - cron: "0 3 * * 1" # Every Monday 9 AM IST
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - run: npm install openai
+
+      - name: Generate content
+        run: node scripts/generateContent.js
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          IDEA: ${{ github.event.inputs.idea }}
+
+      - name: Commit content
+        run: |
+          git config user.name "content-bot"
+          git config user.email "bot@github.com"
+          git add content/scheduled.json
+          git commit -m "Add scheduled content"
+          git push

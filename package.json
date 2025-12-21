@@ -1,0 +1,18 @@
+{
+  "name": "ai-content-engine",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "scripts/generateContent.js",
+  "scripts": {
+    "start": "node scripts/generateContent.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["ai", "content-generation", "openai"],
+  "author": "",
+  "license": "ISC",
+  "description": "Generate AI-powered content for social media platforms",
+  "dependencies": {
+    "openai": "^4.52.0",
+    "dotenv": "^16.3.1"
+  }
+}
